@@ -42,5 +42,5 @@ RUN curl -o fftw.tar.gz http://www.fftw.org/fftw-${FFTW_VERSION}.tar.gz \
   && md5sum -c fftw.tar.gz.md5 \
   && tar -xzvf fftw.tar.gz && cd fftw-${FFTW_VERSION} \
   && ./configure --disable-double --enable-float --enable-sse2 --enable-avx --enable-avx2 --enable-avx512 --enable-static --disable-shared \
-  && make -j \
+  && make \
   && make install
