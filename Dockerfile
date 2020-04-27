@@ -12,10 +12,7 @@
 # when updates to FFTW are released.
 ###############################################################################
 
-###############################################################################
-# Build stage
-###############################################################################
-FROM nvidia/cuda:10.2-devel-ubuntu18.04 as fftw
+FROM ubuntu/ubuntu:18.04 as fftw
 
 ARG FFTW_VERSION=3.3.8
 ARG FFTW_MD5=8aac833c943d8e90d51b697b27d4384d
@@ -28,7 +25,6 @@ RUN apt-get update \
   && apt-get update \
   && apt-get install -y --no-install-recommends \
     build-essential \
-    cmake \
     curl \
     gcc-9 \
   && rm -rf /var/lib/apt/lists/*
@@ -41,6 +37,7 @@ RUN curl -o fftw.tar.gz http://www.fftw.org/fftw-${FFTW_VERSION}.tar.gz \
   && echo "${FFTW_MD5}  fftw.tar.gz" > fftw.tar.gz.md5 \
   && md5sum -c fftw.tar.gz.md5 \
   && tar -xzvf fftw.tar.gz && cd fftw-${FFTW_VERSION} \
-  && ./configure --disable-double --enable-float --enable-sse2 --enable-avx --enable-avx2 --enable-avx512 --enable-static --disable-shared \
+  && ./configure --disable-double --enable-float --enable-sse2 --enable-avx --enable-avx2 --enable-avx512 --disable-static --enable-shared \
   && make \
-  && make install
+  && make install \
+  && rm -rf fftw.tar.gz fftw.tar.gz.md5 fftw-${FFTW_VERSION}
